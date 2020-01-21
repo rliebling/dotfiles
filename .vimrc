@@ -3,6 +3,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'elixir-editors/vim-elixir'
+Plug 'mhinz/vim-mix-format'
 "Plug 'slashmili/alchemist.vim'
 "Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/async.vim'
@@ -20,7 +21,6 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'bkad/CamelCaseMotion'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-"Plug 'Shougo/unite.vim'
 if has('nvim')
   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -44,6 +44,10 @@ let g:lsp_signs_warning = {'text': '‼'}
 
 
 " from https://github.com/prabirshrestha/vim-lsp
+let g:lsp_settings = {
+\ 'elixirLS': { 'workspace_config': {'dialyzerEnabled': v:false}}
+\}
+let g:lsp_diagnostics_enabled = 1
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
