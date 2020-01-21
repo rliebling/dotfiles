@@ -11,7 +11,9 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'reedes/vim-pencil'
 Plug 'tpope/vim-markdown'
+Plug 'jtratner/vim-flavored-markdown'
 Plug 'tpope/vim-projectionist'
 "Plug 'c-brenn/fuzzy-projectionist.vim'
 Plug 'andyl/vim-projectionist-elixir'
@@ -571,6 +573,21 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+" with vim-flavored-markdown
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
+" Settings for Writting
+let g:pencil#wrapModeDefault = 'soft'   " default is 'hard'
+
+" Vim-pencil Configuration
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init()
+  autocmd FileType text         call pencil#init()
+augroup END
 call camelcasemotion#CreateMotionMappings('<leader>')
 
 "key mapping for window navigation
