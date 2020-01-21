@@ -129,8 +129,14 @@ function! s:denite_filter_my_settings() abort
   \ <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
   inoremap <silent><buffer> <Up>
   \ <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
-  nnoremap <silent><buffer><expr> <Esc>
-  \ denite#do_map('quit')
+  imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+  imap <silent><buffer> <Esc> <Plug>(denite_filter_update)
+  inoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  inoremap <silent><buffer><expr> <C-t>
+  \ denite#do_map('do_action', 'tabopen')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
 endfunction
 
 
@@ -181,6 +187,10 @@ call denite#custom#var('grep', 'final_opts', [])
 
 " make all denite sources start in insert mode
 call denite#custom#option("_", "start_filter", 1)
+call denite#custom#option("_", "auto_resume", v:false)
+call denite#custom#option("_", "input", "") " does this matter?  think it had to do with how i was quitting that
+"call denite#custom#option("_", "input", "XXYZ") " does this matter?  think it had to do with how i was quitting that
+                                            " when i'd open the filter again i'd still have the input there.
 call denite#custom#option("_", "direction", "dynamictop")
 
 "    function! s:unite_settings()
@@ -203,16 +213,17 @@ else
   " having .git dir)
   nnoremap <silent> [denite]f :<C-u>Denite -auto-resize -buffer-name=files file/rec file/rec/test<cr><c-u>
 endif
-nnoremap <silent> [denite]y :<C-u>Denite -buffer-name=yanks history/yank<cr>
+nnoremap <silent> [denite]y :<C-u>Denite -buffer-name=yanks neoyank<cr>
 nnoremap <silent> [denite]l :<C-u>Denite -auto-resize -buffer-name=line line<cr>
 nnoremap <silent> [denite]b :<C-u>Denite -auto-resize -buffer-name=buffers buffer<cr>
 nnoremap <silent> [denite]/ :<C-u>Denite  -buffer-name=search grep:.<cr>
 nnoremap <silent> [denite]G :<C-u>DeniteWithCursorWord -buffer-name=search grep:.<cr>
 nnoremap <silent> [denite]m :<C-u>Denite -auto-resize -buffer-name=mappings mapping<cr>
-nnoremap <silent> [denite]s :<C-u>Denite -quick-match buffer<cr>
+nnoremap <silent> [denite]s :<C-u>Denite -quick-move buffer<cr>
 nnoremap <silent> [denite]r :<C-u>DeniteResume<cr>
 nnoremap <silent> [denite]q :<C-u>Denite quickfix<cr>
 nnoremap <silent> [denite]L :<C-u>Denite location_list<cr>
+nnoremap <silent> [denite]j :<C-u>Denite jump<cr>
 
 "    " unite settings
 "    
@@ -588,6 +599,7 @@ augroup pencil
   autocmd FileType markdown,mkd call pencil#init()
   autocmd FileType text         call pencil#init()
 augroup END
+
 call camelcasemotion#CreateMotionMappings('<leader>')
 
 "key mapping for window navigation
